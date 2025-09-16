@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import 'primeicons/primeicons.css';
+
+
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-control-zoom {
+  position: fixed !important;
+  top: 90% !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 9px;
+  background: white;
+  padding: 12px;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  border: 2px solid #a2a2a2 !important;
+  border-radius: 8px !important;
+  justify-content: center;
+  display: flex !important;
+}
+
+/* estilo de cada botão */
+.leaflet-control-zoom a {
+  align-items: center;
+
+ 
+
+
+  color: #111827;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.2);
+
+}
+
+/* efeito no hover */
+.leaflet-control-zoom a:hover {
+  color: black;
+  border-color: rgb(36, 36, 36);
+  transform: scale(1.3);
+}

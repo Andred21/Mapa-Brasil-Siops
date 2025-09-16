@@ -1,0 +1,8 @@
+// Exemplo com Axios
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: 'http://127.0.0.1:8000/api', // rota base da API Laravel
+});
+
+export default api;

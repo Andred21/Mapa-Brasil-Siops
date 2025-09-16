@@ -1,0 +1,1 @@
+export type UF = { sigla: string; nome: string; codigo_uf: number };
