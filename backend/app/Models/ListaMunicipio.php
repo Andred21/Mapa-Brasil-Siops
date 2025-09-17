@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ListaMunicipio extends Model
 {
-    //
+    protected $fillable = [
+        'co_municipio',
+        'no_municipio',
+        'id_uf',
+    ];
 }

@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ListaAnoPeriodoEstadual extends Model
+class PopulacaoUniao extends Model
 {
     protected $fillable =
         [
             'ano',
-            'dsPeriodo',
-            'periodo' 
+            'populacao',
 
         ];
 }
