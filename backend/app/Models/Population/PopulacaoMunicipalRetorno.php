@@ -9,9 +9,13 @@ class PopulacaoMunicipalRetorno extends Model
     protected $fillable =
         [
             'anoValido',
-            'municipio',
             'periodoValido',
             'populacao',
-            'id_uf',
+            'municipio_id',
         ];
+
+        public function municipio()
+        {
+            return $this->belongsTo(ListaMunicipio::class, 'municipio_id');
+        }
 }

@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use illuminate\Database\Eloquent\Model;
 
-class RreoAbstract extends Model
+class despesasSubfuncaoMunicipal extends Model
 {
     protected $fillable = [
-
         'ano',
-        'descricao',
+        'coItem',
+        'dsItem',
         'grupo',
-        'item',
-        'municipio',
+        'id',
+        'municipio_id',
         'ordem',
         'periodo',
         'quadro',
-        'uf',
         'vl_coluna1',
         'vl_coluna10',
         'vl_coluna2',
@@ -27,7 +26,10 @@ class RreoAbstract extends Model
         'vl_coluna7',
         'vl_coluna8',
         'vl_coluna9',
-
     ];
 
+    public function municipio()
+    {
+        return $this->belongsTo(ListaMunicipio::class, 'municipio_id');
+    }
 }

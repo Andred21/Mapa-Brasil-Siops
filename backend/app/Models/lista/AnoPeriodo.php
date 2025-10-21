@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ListaEstado extends Model
+class AnoPeriodo extends Model
 {
     protected $fillable = [
-        'co_uf',
-        'no_uf',
-        'sg_uf',
+
+        'ds_ano',
+        'ds_periodo',
+        'nu_periodo'
     ];
 }

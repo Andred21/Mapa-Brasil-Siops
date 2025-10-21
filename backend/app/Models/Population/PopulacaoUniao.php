@@ -10,6 +10,5 @@ class PopulacaoUniao extends Model
         [
             'ano',
             'populacao',
-
         ];
 }

@@ -13,6 +13,8 @@ class IndicadorAbstract extends Model
             'indicador_calculado',
             'numerador',
             'numero_indicador',
+            'ano', 
+            'periodo',
 
         ];
 

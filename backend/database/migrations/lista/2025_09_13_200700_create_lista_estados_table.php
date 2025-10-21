@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('indicador_uniaos', function (Blueprint $table) {
+        Schema::create('lista_estado', function (Blueprint $table) {
             $table->id();
+            $table->string('co_uf')->unique();
+            $table->string('no_uf');
+            $table->string('sg_uf',2);
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('indicador_uniaos');
+        Schema::dropIfExists('lista_estado');
     }
 };

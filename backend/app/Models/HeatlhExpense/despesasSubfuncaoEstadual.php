@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
-class RreoEstadual extends Model
+class DespesasSubfuncaoEstadual extends Model
 {
     protected $fillable = [
         'ano',
@@ -24,11 +24,12 @@ class RreoEstadual extends Model
         'valor7',
         'valor8',
         'valor9',
+
     ];
 
     public function estado()
     {
         return $this->belongsTo(ListaEstado::class, 'estado_id');
     }
-
 }
+

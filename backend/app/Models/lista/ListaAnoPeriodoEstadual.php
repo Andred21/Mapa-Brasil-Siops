@@ -13,4 +13,5 @@ class ListaAnoPeriodoEstadual extends Model
             'periodo' 
 
         ];
+        
 }

@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lista_estados', function (Blueprint $table) {
+        Schema::create('populacao_estadual_retorno', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('estado_id')->constrained('lista_estado')->onDelete('cascade');
+            $table->string('anoValido');
+            $table->string('periodoValido');
+            $table->string('populacao');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lista_estados');
+        Schema::dropIfExists('populacao_estadual_retorno');
     }
 };

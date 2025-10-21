@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('indicador_municipals', function (Blueprint $table) {
+        Schema::create('lista_ano_periodo_estadual', function (Blueprint $table) {
             $table->id();
+            $table->string('ano');
+            $table->string('dsPeriodo');
+            $table->string('periodo');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('indicador_municipals');
+        Schema::dropIfExists('lista_ano_periodo_estadual');
     }
 };

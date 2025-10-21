@@ -9,6 +9,12 @@ class ListaMunicipio extends Model
     protected $fillable = [
         'co_municipio',
         'no_municipio',
-        'id_uf',
+        'estado_id',
+
     ];
+
+    public function estado()
+    {
+        return $this->belongsTo(ListaEstado::class, 'estado_id');
+    }
 }

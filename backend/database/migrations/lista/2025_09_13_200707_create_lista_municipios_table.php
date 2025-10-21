@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ano_periodos', function (Blueprint $table) {
+        Schema::create('lista_municipio', function (Blueprint $table) {
             $table->id();
+            $table->string('co_municipio')->unique();
+            $table->string('no_municipio');
+            $table->foreignId('estado_id')->constrained('lista_estado')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ano_periodos');
+        Schema::dropIfExists('lista_municipio');
     }
 };

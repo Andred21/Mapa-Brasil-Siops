@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('indicador_estaduals', function (Blueprint $table) {
+         Schema::create('ano_periodo', function (Blueprint $table) {
             $table->id();
+            $table->string('ds_ano');
+            $table->string('ds_periodo');
+            $table->string('nu_periodo');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('indicador_estaduals');
+        Schema::dropIfExists('ano_periodo');
     }
 };

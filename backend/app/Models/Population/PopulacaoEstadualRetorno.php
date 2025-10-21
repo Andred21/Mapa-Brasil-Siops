@@ -11,6 +11,11 @@ class PopulacaoEstadualRetorno extends Model
         'anoValido',
         'periodoValido',
         'populacao',
-        'id_uf',
+        'estado_id',
     ];
+
+    public function estado()
+    {
+        return $this->belongsTo(ListaEstado::class, 'estado_id');
+    }
 }

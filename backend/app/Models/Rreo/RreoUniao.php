@@ -1,11 +1,24 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
 
-
-
-use app\Models\RreoAbstract;
-class RreoUniao extends RreoAbstract
+class RreoUniao extends Model
 {
-    
+    protected $fillable = [
+
+        'ano',
+        'descricao',
+        'grupo',
+        'ordem',
+        'periodo',
+        'quadro',
+        'valor1',
+        'valor2',
+        'valor3',
+        'valor4',
+        'valor5',
+        'valor6',
+        'valor7',
+    ];
 }
