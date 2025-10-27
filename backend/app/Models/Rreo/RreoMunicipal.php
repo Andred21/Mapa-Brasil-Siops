@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\lista\ListaMunicipio;
 use Illuminate\Database\Eloquent\Model;
 
 class RreoMunicipal extends Model
@@ -11,7 +12,6 @@ class RreoMunicipal extends Model
             'coItem',
             'dsItem',
             'grupo',
-            'id',
             'municipio_id',
             'ordem',
             'periodo',

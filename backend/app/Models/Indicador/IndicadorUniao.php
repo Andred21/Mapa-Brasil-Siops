@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Indicador;
 
-use App\Models\IndicadorAbstract;
+use App\Models\Abstracts\IndicadorAbstract;
+
 
 class IndicadorUniao extends IndicadorAbstract
 {

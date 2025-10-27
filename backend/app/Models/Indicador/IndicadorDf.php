@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Models;
-use App\Models\IndicadorAbstract;
+namespace App\Models\Indicador;
+
+use App\Models\Abstracts\IndicadorAbstract;
+
 
 class IndicadorDf extends IndicadorAbstract
 {

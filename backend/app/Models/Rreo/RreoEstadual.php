@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\lista\ListaEstado;
 use Illuminate\Database\Eloquent\Model;
 
 class RreoEstadual extends Model

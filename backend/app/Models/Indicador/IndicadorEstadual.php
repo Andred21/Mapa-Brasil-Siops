@@ -1,8 +1,9 @@
 <?php
+namespace App\Models\Indicador;
 
-namespace App\Models;
+use App\Models\Abstracts\IndicadorAbstract;
 
-use App\Models\IndicadorAbstract;
+use App\Models\lista\ListaEstado;
 
 class IndicadorEstadual extends IndicadorAbstract
 {
@@ -10,7 +11,7 @@ class IndicadorEstadual extends IndicadorAbstract
 
     protected $fillable = [
         'estado_id',
-        ...parent::FILLABLE
+    
     ];
 
     public function estado()

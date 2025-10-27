@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\lista;
 
 use Illuminate\Database\Eloquent\Model;
 
 class AnoPeriodo extends Model
 {
+    protected $table = 'ano_periodo';
+    
     protected $fillable = [
 
         'ds_ano',

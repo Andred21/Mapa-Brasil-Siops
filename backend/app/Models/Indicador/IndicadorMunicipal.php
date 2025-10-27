@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Indicador;
 
-use App\Models\IndicadorAbstract;
+use App\Models\Abstracts\IndicadorAbstract;
+
+use App\Models\lista\ListaMunicipio;
 class IndicadorMunicipal extends IndicadorAbstract
 {
     protected $table = 'indicador_municipal';
 
     protected $fillable = [
         'municipio_id',
-        ...parent::FILLABLE
     ];
 
     public function municipio()

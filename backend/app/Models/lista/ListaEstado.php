@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\lista;
 
 use Illuminate\Database\Eloquent\Model;
 
 class ListaEstado extends Model
 {
+
+     protected $table = 'lista_estado';
     protected $fillable = [
         'co_uf',
         'no_uf',

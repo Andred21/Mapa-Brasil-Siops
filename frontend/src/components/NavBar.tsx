@@ -1,49 +1,61 @@
-
-import Logo from "./Logo";
 import { Button } from "primereact/button";
+import {
+  PiMapTrifoldDuotone,
+  PiMagnifyingGlassDuotone,
+  PiInfoDuotone,
+} from "react-icons/pi";
+import { FiMenu } from "react-icons/fi";
+import Logo from "./Logo";
+import { useState } from "react";
 
-{/* NavBar Principal, com a logo, botão para pesquisar e menu lateral */}
 export default function NavBar() {
+  const [selected, setSelected] = useState<string>("Mapa");
+
+  const navItems = [
+    { label: "Mapa", icon: <PiMapTrifoldDuotone size={23} /> },
+    { label: "Pesquisar", icon: <PiMagnifyingGlassDuotone size={23} /> },
+    { label: "Sobre", icon: <PiInfoDuotone size={23} /> },
+  ];
 
   return (
+    <div className="bg-white/70 shadow-sm z-50 backdrop-blur-md fixed top-0 left-0 right-0">
+      <div className="flex items-center justify-between px-10 h-20 max-w-screen mx-auto">
+        {/* ===== Esquerda: Logo ===== */}
+        <div className="flex items-center gap-2 cursor-pointer hover:text-emerald-700 transition-colors duration-200">
+          <Logo />
+        </div>
 
-    <div className="bg-white/70 shadow-sm z-50 backdrop-blur-md ">
+        {/* ===== Centro: Botões de navegação ===== */}
+        <div className="flex items-center gap-10 font-medium text-lg">
+          {navItems.map((item) => {
+            const isActive = selected === item.label;
+            return (
+              <Button
+                key={item.label}
+                label={item.label}
+                icon={item.icon}
+                text
+                onClick={() => setSelected(item.label)}
+                className={` flex items-center gap-2 !bg-transparent !border-b-2 
+                           ${isActive ? "!border-emerald-700" : "!border-transparent"} 
+                           ${isActive ? "!text-emerald-700" : "!text-gray-800"} 
+                           hover:!text-emerald-700 hover:!border-emerald-700 rounded-2xl focus:!shadow-none focus:!outline-none focus:!ring-0 active:!shadow-none active:!outline-none active:!ring-0  transition-all duration-200`}
+              />
 
-      <div className="flex items-center justify-between px-8 h-20 ">
+            );
+          })}
+        </div>
 
-        {/* Esquerda: Logo */}
-
-        <Logo />
-
-
-        {/* Centro: Botão Pesquisar */}
-        <div className="flex-1 flex justify-center mr-10">
-          
+        {/* ===== Direita: Menu Hamburguer ===== */}
+        <div className="justify-end">
           <Button
-            label="Pesquisar"
-            icon="pi pi-search "
-            severity="success"
-            outlined
-            size="large"
-            className="w-40 !h-9  !mr-1 !font-normal !rounded-xl !border !border-gray-400
-              focus:!outline-none focus:!border-green-400 focus:!ring-green-200 focus:!ring-1
-              hover:!border-green-400 hover:ring-1 hover:ring-green-200
-              !bg-gray-100 !text-gray-600 !transition !duration-150"
-          />
-
+            text
+            className="!text-gray-800 hover:!text-emerald-700 !bg-transparent !border-b-2   hover:!border-emerald-700 rounded-2xl focus:!shadow-none focus:!outline-none focus:!ring-0 active:!shadow-none active:!outline-none active:!ring-0  transition-all duration-200"
+          >
+            <FiMenu className="text-2xl" size={30} />
+          </Button>
         </div>
-
-        {/* Direita: Menu hamburguer */}
-        <div className="flex-shrink-0">
-
-          <i className="pi pi-bars !text-2xl cursor-pointer text-gray-700 hover:text-green-600"></i>
-
-        </div>
-
       </div>
-
     </div>
-
   );
-
 }
