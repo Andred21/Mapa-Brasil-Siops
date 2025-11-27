@@ -32,5 +32,44 @@ export interface GraficoLc141 extends GraficoBase {
 
 export interface GraficoSerieTemporal extends GraficoBase {
   labels: string[];
-  series: { name: string; data: number[] }[];
+  series: {
+    name: string;
+    data: {
+      indicador: number;     // valor calculado (ex: despesa per capita)
+      numerador?: number;
+      denominador?: number;  // população
+    }[];
+  }[];
+}
+
+
+export interface EstatisticaIndicador {
+  nome_indicador: string;
+
+  ano_inicio: number;
+  ano_final: number;
+
+  valor_inicial: number;
+  valor_final: number;
+  media: number;
+  minimo: number;
+  maximo: number;
+
+  crescimento_absoluto: number;
+  crescimento_percentual: number;
+  crescimento_medio_anual: number;
+
+  tendencia: "Crescimento" | "Queda" | "Estável";
+
+  soma_numerador: number;
+  soma_denominador: number;
+}
+
+export interface GraficoSerieEstatisticas {
+  estatisticas: EstatisticaIndicador[];
+  labels: string[];
+  meta: {
+    tipo: string;
+    codigo: string;
+  };
 }

@@ -61,6 +61,14 @@ class IndicadorEstadualRepository
         return IndicadorEstadual::where('numero_indicador', $numeroIndicador)->get();
     }
 
+    public function  findByEstadoIndicadorAno(int $estadoId, string $numeroIndicador, string $ano)
+    {
+        return IndicadorEstadual::where('estado_id', $estadoId)
+            ->where('numero_indicador', $numeroIndicador)
+            ->where('ano', $ano)
+            ->first();
+    }
+
     
 
 }

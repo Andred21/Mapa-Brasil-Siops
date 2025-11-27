@@ -24,6 +24,17 @@ class IndicadorGraphicController extends Controller
         return response()->json($data);
     }
 
+    public function composicaoReceitaPorPeriodo(Request $request, string $tipo, string $codigo): JsonResponse
+    {
+        $anos = explode(',', $request->get('anos')); // ?anos=2021,2022,2023
+        $anos = array_map('intval', $anos);
+
+        $data = $this->graficoService->composicaoReceitaPorAnos($tipo, $codigo, $anos);
+
+        return response()->json($data);
+    }
+
+
     /**
      * 
      * Fontes de Saúde (1.3, 1.4, 1.5)
@@ -72,5 +83,28 @@ class IndicadorGraphicController extends Controller
 
         $data = $this->graficoService->serieTemporal($tipo, $codigo, $csv, $inicio, $fim);
         return response()->json($data);
+    }
+
+    public function estatisticasSerieIndicadores(
+        Request $request,
+        string $tipo,
+        string $codigo
+    ): JsonResponse {
+        $csv = $request->query('indicadores', '1.1');
+        $inicio = (int) $request->query('inicio', date('Y') - 5);
+        $fim = (int) $request->query('fim', date('Y'));
+
+        try {
+            $dados = $this->graficoService->getEstatisticasIndicadoresFromSerie(
+                $tipo,
+                $codigo,
+                $csv,
+                $inicio,
+                $fim
+            );
+            return response()->json($dados);
+        } catch (\Throwable $e) {
+            return response()->json(['erro' => $e->getMessage()], 400);
+        }
     }
 }

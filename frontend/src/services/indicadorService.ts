@@ -24,6 +24,11 @@ const indicadorService = {
         return response.data;
     },
 
+    async buscarIndicadorEstadualEspecificoAno(coUf: string, numeroIndicador: string, ano: string): Promise<indicadorEstadual[]> {
+        const response = await api.get(`/indicador/estadual/${coUf}/${numeroIndicador}/${ano}`);
+        return response.data;
+    },
+
     // Municipal
 
     async getIndicadorMunicipal(coMunicipio: string): Promise<indicadorMunicipio[]> {
@@ -33,6 +38,11 @@ const indicadorService = {
 
     async buscarIndicadorMunicipalAno(coMunicipio: string, ano: string): Promise<indicadorMunicipio[]> {
         const response = await api.get(`/indicador/municipal/${coMunicipio}/${ano}`);
+        return response.data;
+    },
+
+    async buscarIndicadorMunicipalEspecificoAno(coMunicipio: string, numeroIndicador: string, ano: string): Promise<indicadorMunicipio[]> {
+        const response = await api.get(`/indicador/municipal/${coMunicipio}/${numeroIndicador}/${ano}`);
         return response.data;
     },
 
@@ -48,6 +58,11 @@ const indicadorService = {
         return response.data;
     },
 
+    async buscarIndicadorDfEspecificoAno(numeroIndicador: string, ano: string): Promise<indicadorDf[]> {
+        const response = await api.get(`/indicador/df/${numeroIndicador}/${ano}`);
+        return response.data;
+    },
+
     // União 
 
     async getIndicadorUniao(): Promise<indicadorUniao[]> {
@@ -55,8 +70,13 @@ const indicadorService = {
         return response.data;
     },
 
-    async buscarIndicadorUniaoAno(ano: string): Promise<indicadorDf[]> {
+    async buscarIndicadorUniaoAno(ano: string): Promise<indicadorUniao[]> {
         const response = await api.get(`/indicador/uniao/${ano}`);
+        return response.data;
+    },
+
+    async buscarIndicadorUniaoEspecificoAno(numeroIndicador: string, ano: string): Promise<indicadorUniao[]> {
+        const response = await api.get(`/indicador/uniao/${numeroIndicador}/${ano}`);
         return response.data;
     }
 

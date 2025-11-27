@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class SiopsService
 {
+    /* Retorna dados de cada model da api Siops */
 
     private string $baseUrl = 'https://siops-consulta-publica-api.saude.gov.br/v1/';
 

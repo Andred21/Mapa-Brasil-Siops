@@ -8,13 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class SiopsIndicadorMunicipalSeeder extends Seeder
 {
+
+    /* Seeder para armazenar os indicadores de todos os municipios  */
+
+    
     public function run(): void
     {
         $siops = app(SiopsService::class);
 
         $anosPeriodos = DB::table('ano_periodo')
-            ->where('nu_periodo', 2)
-            ->where('ds_ano', '>=', 2021)
+            ->where('nu_periodo', 1)
+            ->where('ds_ano', '>=', 2025)
             ->get();
 
         if ($anosPeriodos->isEmpty()) {
@@ -62,10 +66,10 @@ class SiopsIndicadorMunicipalSeeder extends Seeder
 
                         $municipiosIds[] = $municipio->id;
 
-                        $this->command->line("✔️ {$municipio->no_municipio} ({$municipio->co_municipio}) — Total: " . count($dados));
+                        $this->command->line("{$municipio->no_municipio} ({$municipio->co_municipio}) — Total: " . count($dados));
 
                     } catch (\Throwable $e) {
-                        $this->command->warn("⚠️ Erro em {$municipio->no_municipio} ({$municipio->co_municipio}): " . $e->getMessage());
+                        $this->command->warn("Erro em {$municipio->no_municipio} ({$municipio->co_municipio}): " . $e->getMessage());
                     }
                 }
 
@@ -81,13 +85,13 @@ class SiopsIndicadorMunicipalSeeder extends Seeder
                     // Insere lote
                     DB::table('indicador_municipal')->insert($lote);
 
-                    $this->command->info("📦 Inserido bloco com " . count($lote) . " indicadores.");
+                    $this->command->info("Inserido bloco com " . count($lote) . " indicadores.");
                 }
             });
 
-            $this->command->info("✅ Importação finalizada para o ano {$ano}/{$periodo}");
+            $this->command->info("Importação finalizada para o ano {$ano}/{$periodo}");
         }
 
-        $this->command->info("🎉 Indicadores municipais importados com sucesso.");
+        $this->command->info("Indicadores municipais importados com sucesso.");
     }
 }

@@ -8,13 +8,19 @@ use Illuminate\Support\Facades\DB;
 
 class SiopsPopulationEstadualSeeder extends Seeder
 {
+
+    /* Seeder para armazenar a população de todos os estados  */
+
     public function run(): void
     {
         $siops = app(SiopsService::class);
         DB::beginTransaction();
 
         try {
-            $anosPeriodos = DB::table('ano_periodo')->get();
+            $anosPeriodos = DB::table('ano_periodo')
+                ->where('nu_periodo', '1')
+                ->get();
+
             $estados = db::table('lista_estado')->get();
 
             if ($anosPeriodos->isEmpty() || $estados->isEmpty()) {
@@ -24,10 +30,11 @@ class SiopsPopulationEstadualSeeder extends Seeder
             foreach ($anosPeriodos as $anoPeriodo) {
                 $ano = $anoPeriodo->ds_ano;
                 $periodo = $anoPeriodo->nu_periodo;
-
-                if ($periodo !== '2') {
+                
+                if ($ano < 2025) {
                     continue;
                 }
+
 
 
                 $this->command->info("Importando população para o ano: {$ano}, período: {$periodo}");

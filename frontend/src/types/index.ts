@@ -12,3 +12,4 @@ export * from './indicador/indicadorUniao';
 export * from './indicador/indicadorGraphics';
 export * from './subfuncao/subfuncaoEstado';
 export * from './subfuncao/subfuncaoMunicipio';
+

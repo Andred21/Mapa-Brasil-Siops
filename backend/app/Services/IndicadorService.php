@@ -67,6 +67,17 @@ class IndicadorService
         return $this->indiEstadualRepository->findByEstadoAno($estado->id, $ano);
     }
 
+    public function getIndicadoreEspecificoEstadualAno(string $coUf, string $numeroIndicador, string $ano)
+    {
+        $estado = $this->listaEstadoRepository->findByCodUf($coUf);
+
+        if (!$estado) {
+            throw new \Exception("Estado com código {$coUf} não encontrado");
+        }
+
+        return $this->indiEstadualRepository->findByEstadoIndicadorAno($estado->id, $numeroIndicador, $ano);
+    }
+
     // Indicadores dos Municípios
 
     /**
@@ -94,6 +105,7 @@ class IndicadorService
 
         return $this->getIndicadorMunicipioId($municipio->id);
     }
+    
 
     /**
      * 
@@ -109,6 +121,17 @@ class IndicadorService
         }
 
         return $this->indiMunicipalRepository->findByMunicipioAno($municipios->id, $ano);
+    }
+
+    public function getIndicadoreEspecificoMunicipalAno(string $coMunicipio, string $numeroIndicador, string $ano)
+    {
+        $municipios = $this->listaMunicipioRepository->findByCod($coMunicipio);
+
+        if (!$municipios) {
+            throw new \Exception("Código do Município {$coMunicipio} não encontrado");
+        }
+
+        return $this->indiMunicipalRepository->findByMunicipioIndicadorAno($municipios->id, $numeroIndicador, $ano);
     }
 
     // Indicadores do DF (Distrito Federal)
@@ -132,11 +155,14 @@ class IndicadorService
         return $this->indiDfRepository->findByAno($ano);
     }
 
+    public function getIndicadoreEspecificoDFAno(string $numeroIndicador, string $ano)
+    {
+        return $this->indiDfRepository->findByDfIndicadorAno($numeroIndicador, $ano);
+    }
 
     // Indicadores da União
 
     /**
-     * 
      * Todos os indicadores da União
      * 
      */
@@ -153,6 +179,11 @@ class IndicadorService
     public function getIndicadoresUniaoAno(string $ano)
     {
         return $this->indiUniaoRepository->findByAno($ano);
+    }
+
+    public function getIndicadoreEspecificoUniaoAno(string $numeroIndicador, string $ano)
+    {
+        return $this->indiUniaoRepository->findByUniaoIndicadorAno($numeroIndicador, $ano);
     }
 
 

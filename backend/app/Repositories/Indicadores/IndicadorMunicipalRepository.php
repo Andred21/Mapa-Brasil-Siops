@@ -59,4 +59,12 @@ class IndicadorMunicipalRepository
         return IndicadorMunicipal::where('numero_indicador', $numeroIndicador)->get();
     }
 
+
+    public function  findByMunicipioIndicadorAno(int $municipioId, string $numeroIndicador, string $ano)
+    {
+        return IndicadorMunicipal::where('municipio_id', $municipioId)
+            ->where('numero_indicador', $numeroIndicador)
+            ->where('ano', $ano)
+            ->first();
+    }
 }

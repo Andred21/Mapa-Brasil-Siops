@@ -11,6 +11,8 @@ use App\Repositories\Ente\ListaMunicipioRepository;
 
 class EntesService
 {
+    
+    
     public function __construct(
         protected ListaEstadoRepository $lisaEstadoRepository,
         protected ListaAnoPeriodoEstadualRepository $listaAnoPeriodoEstadual,

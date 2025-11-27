@@ -67,18 +67,22 @@ Route::prefix('indicador')->group(function () {
     //Estado
     Route::get('/estadual/{coUf}', [IndicadorController::class, 'estadual']);
     Route::get('/estadual/{coUf}/{ano}', [IndicadorController::class, 'estadualPorAno']);
+    Route::get('/estadual/{coUf}/{numeroIndicador}/{ano}', [IndicadorController::class, 'estadualEspecificoPorAno']);
 
     //Municipíos
     Route::get('/municipal/{coMunicipio}', [IndicadorController::class, 'municipal']);
     Route::get('/municipal/{coMunicipio}/{ano}', [IndicadorController::class, 'municipalPorAno']);
+    Route::get('/municipal/{coMunicipio}/{numeroIndicador}/{ano}', [IndicadorController::class, 'municipalEspecificoPorAno']);
 
     // DF (Distrito Federal)
     Route::get('/df', [IndicadorController::class, 'df']);
     Route::get('/df/{ano}', [IndicadorController::class, 'dfPorAno']);
+    Route::get('/df/{numeroIndicador}/{ano}', [IndicadorController::class, 'dfEspecificoPorAno']);
 
     // União 
     Route::get('/uniao', [IndicadorController::class, 'uniao']);
     Route::get('/uniao/{ano}', [IndicadorController::class, 'uniaoPorAno']);
+    Route::get('/uniao/{numeroIndicador}/{ano}', [IndicadorController::class, 'uniaoEspecificoPorAno']);
 });
 
 
@@ -86,7 +90,7 @@ Route::prefix('subfuncao')->group(function () {
 
     // Estado
 
-    Route::get('/estado', [subfuncaoController::class, 'allEstado']);
+    Route::get('/estado', [SubfuncaoController::class, 'allEstado']);
     Route::get('/estado/cod/{coUf}', [SubfuncaoController::class, 'porEstadoCodUf']);
     Route::get('/estado/grupoDescricao', [SubfuncaoController::class, 'grupoDescricaoEstado']);
     Route::get('/estado/cod/{coUf}/{ano}', [SubfuncaoController::class, 'porEstadoEAno']);
@@ -105,6 +109,8 @@ Route::prefix('graficos')->group(function () {
     // Composição da Receita (indicador 1.1, 1.2 e 1.6)
     Route::get('/composicao-receita/{tipo}/{codigo}/{ano}', [IndicadorGraphicController::class, 'composicaoReceita']);
 
+    Route::get('/composicao-receita-periodo/{tipo}/{codigo}', [IndicadorGraphicController::class, 'composicaoReceitaPorPeriodo']);
+
     // Fontes de Saúde (indicador 1.3, 1.4 e 1.5)
     Route::get('/fontes-saude/{tipo}/{codigo}/{ano}', [IndicadorGraphicController::class, 'fontesSaude']);
 
@@ -116,4 +122,9 @@ Route::prefix('graficos')->group(function () {
 
     // Série Temporal (indicador 2.1)
     Route::get('/serie-temporal/{tipo}/{codigo}', [IndicadorGraphicController::class, 'serieTemporal']);
+    
+
+   Route::get('/estatisticas/serie/{tipo}/{codigo}', [IndicadorGraphicController::class, 'estatisticasSerieIndicadores']);
+
+
 });

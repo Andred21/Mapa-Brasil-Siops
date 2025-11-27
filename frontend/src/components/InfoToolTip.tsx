@@ -5,13 +5,15 @@ import { FaCircleInfo } from "react-icons/fa6";
 interface InfoToolTipProps {
   message: string;
   position?: "top" | "bottom" | "left" | "right";
-  size?: string;
+  size?: number;
+  iconClass?: string;
 }
 
 const InfoToolTip: React.FC<InfoToolTipProps> = ({
   message,
   position = "right",
-  size = "1.1rem",
+  size = 15,
+  iconClass = "",
 }) => {
   const uniqueClass = React.useMemo(
     () => `tooltip-${Math.random().toString(36).substring(2, 8)}`,
@@ -19,6 +21,7 @@ const InfoToolTip: React.FC<InfoToolTipProps> = ({
   );
 
   return (
+    
     <>
       {/* Tooltip customizado */}
       <Tooltip
@@ -30,17 +33,21 @@ const InfoToolTip: React.FC<InfoToolTipProps> = ({
         hideDelay={100}
       />
 
-      {/* Ícone com fundo azul-claro */}
+      {/* Ícone */}
       <div
-        className={`${uniqueClass} flex items-center justify-center w-4 h-6 rounded-full text-esmerald-600  transition-colors`}
+        className={`${uniqueClass} flex items-center justify-center  rounded-full text-esmerald-600 transition-colors`}
         style={{
           cursor: "pointer",
         }}
       >
-        <FaCircleInfo style={{ fontSize: size }} />
+        <FaCircleInfo size={size}  className={`fill-current ${iconClass} `} />
+
       </div>
+
     </>
+
   );
+
 };
 
 export default InfoToolTip;

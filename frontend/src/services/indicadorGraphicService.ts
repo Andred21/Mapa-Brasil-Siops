@@ -7,6 +7,7 @@ import type {
     GraficoDespesaSaude,
     GraficoLc141,
     GraficoSerieTemporal,
+    GraficoSerieEstatisticas,
 
 } from "@/types";
 
@@ -21,6 +22,19 @@ const indicadorGraphicService = {
         ano: number
     ): Promise<GraficoComposicao> {
         const { data } = await api.get(`/graficos/composicao-receita/${tipo}/${codigo}/${ano}`);
+        return data;
+    },
+
+    async getComposicaoReceitaPeriodo(
+        tipo: "estado" | "municipio" | "uniao" | "df",
+        codigo: string,
+        anos: number[]
+    ): Promise<GraficoComposicao> {
+        const { data } = await api.get(`/graficos/composicao-receita-periodo/${tipo}/${codigo}`, {
+            params: {
+                anos: anos.join(",") // ex: "2020,2021,2022"
+            }
+        });
         return data;
     },
 
@@ -69,7 +83,26 @@ const indicadorGraphicService = {
         });
         return data;
     },
+    async getEstatisticasSerieTemporal(
+        tipo: "estado" | "municipio" | "uniao" | "df",
+        codigo: string,
+        indicadores: string,
+        inicio: number,
+        fim: number
+    ): Promise<GraficoSerieEstatisticas> {
+        const { data } = await api.get(
+            `/graficos/estatisticas/serie/${tipo}/${codigo}`,
+            {
+                params: { indicadores, inicio, fim },
+            }
+        );
+
+        return data;
+    },
 
 };
+
+
+
 
 export default indicadorGraphicService;

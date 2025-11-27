@@ -49,4 +49,11 @@ class IndicadorUniaoRepository
             ->where('numero_indicador', $numero)
             ->first();
     }
+
+    public function  findByUniaoIndicadorAno(string $numeroIndicador, string $ano)
+    {
+        return IndicadorUniao::where('numero_indicador', $numeroIndicador)
+            ->where('ano', $ano)
+            ->first();
+    }
 }

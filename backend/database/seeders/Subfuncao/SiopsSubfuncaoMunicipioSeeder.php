@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class SiopsSubfuncaoMunicipioSeeder extends Seeder
 {
+
+    /* Seeder para armazenar a função e subfunção da saúde de todos os municipios  */
     public function run(): void
     {
         $siops = app(SiopsService::class);

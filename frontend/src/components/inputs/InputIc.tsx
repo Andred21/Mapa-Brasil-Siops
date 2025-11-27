@@ -1,36 +1,35 @@
-import { IconField } from 'primereact/iconfield';
-import { InputIcon } from 'primereact/inputicon';
-import { InputText } from 'primereact/inputtext';
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { InputText } from "primereact/inputtext";
 
-type inputIcProps = {
-    icon?: string;
-    holder?: string;
-    size?: number;
-}
+type InputIcProps = {
+  icon?: string;
+  holder?: string;
+  size?: number;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-{/* Componente de InputText com ícone */}
-export default function InputIc({icon, holder, size}: inputIcProps) {
+export default function InputIc({ icon, holder, size, value, onChange }: InputIcProps) {
 
-    return (
+  return (
 
-        <div className='flex'>
+    <div className="flex w-full">
 
-            <IconField iconPosition="left" >
+      <IconField iconPosition="left" className="w-full">
+        <InputIcon className={`${icon} !text-emerald-600`} style={{ fontSize: "18px" }} />
+        <InputText
+          value={value}
+          onChange={onChange}
+          placeholder={holder}
+          className="w-full !rounded-xl border border-emerald-200 bg-white/90 py-3 pl-10 pr-4 text-gray-700 placeholder:text-gray-400 shadow-sm transition-all
+           focus:!border-emerald-400 focus:!ring-2 focus:!ring-emerald-200 focus:outline-none hover:!border-emerald-600"
+          size={size}
+        />
+      </IconField>
 
-                <InputIcon className={`${icon} !text-gray-700`} style={{ fontSize: "15px" }} />
+    </div>
 
-                <InputText
-                    placeholder={holder}
-                    className="w-auto !h-7 !text-sm !rounded-2xl !border !border-gray-300 
-                     focus:!border-green-500 focus:!ring-2 focus:!ring-green-200 !bg-gray-50 
-                     !text-gray-700"
-                    size={size}
-                />
-
-            </IconField>
-
-        </div>
-
-    );
-
+  );
+  
 }

@@ -13,10 +13,13 @@ export default function FitToLayer({ refLayer }: { refLayer: React.RefObject<L.G
     const map = useMap();
 
     useEffect(() => {
+
         if (!refLayer.current) return;
         const bounds = refLayer.current.getBounds();
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
         
     }, [refLayer, map]);
+
     return null;
+    
 }

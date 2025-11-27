@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\DB;
 
 class SiopsPopulationMunicipalSeeder extends Seeder
 {
+
+    /* Seeder para armazenar a população de todos os municipios  */
+
     public function run(): void
     {
         $siops = app(SiopsService::class);
 
         // Filtra apenas ano/periodo válidos
         $anosPeriodos = DB::table('ano_periodo')
-            ->where('nu_periodo', '2')
+            ->where('nu_periodo', '1')
             ->get();
 
         $estados = DB::table('lista_estado')->get();
@@ -28,7 +31,7 @@ class SiopsPopulationMunicipalSeeder extends Seeder
             $ano = $anoPeriodo->ds_ano;
             $periodo = $anoPeriodo->nu_periodo;
 
-            if ($ano < 2010) {
+            if ($ano < 2025) {
                 continue;
             }
 

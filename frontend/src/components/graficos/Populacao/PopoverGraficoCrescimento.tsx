@@ -1,3 +1,5 @@
+
+
 import { useRef, useState } from "react";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Dropdown } from "primereact/dropdown";
@@ -6,52 +8,57 @@ import GraficoCrescimento from "@/components/graficos/Populacao/graficoLinha";
 import {
     useCrescimentoPopulacaoEstadual,
     useCrescimentoPopulacaoMunicipal,
+    useCrescimentoPopulacaoUniao,
     useIndicadoresPopulacaoEstadual,
     useIndicadoresPopulacaoMunicipal,
-} from "@/hook/api/usePopulacao";
+    useIndicadoresPopulacaoUniao,
+} from "@/hook";
 
 interface PopoverGraficoPopulacionalProps {
     codigo: string;
-    tipo: "estado" | "municipio";
+    tipo: "estado" | "municipio" | "uniao";
     sigla?: string;
     cor?: string;
     anoMin?: number;
     anoMax?: number;
 }
-
 export default function PopoverGraficoPopulacional({
     codigo,
     tipo,
     sigla = "",
     cor = "#28a745",
-    anoMin = 2010,
-    anoMax = 2024,
+    anoMin = 2013,
+    anoMax = 2025,
 }: PopoverGraficoPopulacionalProps) {
+
     const [anoInicio, setAnoInicio] = useState(anoMin.toString());
-    const [anoFinal, setAnoFinal] = useState(anoMax.toString());
+
+    const anoFinal = anoMax.toString();
+
     const opRef = useRef<OverlayPanel>(null);
 
-    const { data: dados, isLoading: graficoLoading } =
-        tipo === "estado"
-            ? useCrescimentoPopulacaoEstadual(codigo, anoInicio, anoFinal)
-            : useCrescimentoPopulacaoMunicipal(codigo, anoInicio, anoFinal);
-
-    const { data: indicadores, isLoading: indicadoresLoading } =
-        tipo === "estado"
-            ? useIndicadoresPopulacaoEstadual(codigo, anoInicio, anoFinal)
-            : useIndicadoresPopulacaoMunicipal(codigo, anoInicio, anoFinal);
-
+    // 🔹 Hook genérico que trata estado, município e união
+    let dadosHook, indicadoresHook;
+    if (tipo === "estado") {
+        dadosHook = useCrescimentoPopulacaoEstadual(codigo, anoInicio, anoFinal);
+        indicadoresHook = useIndicadoresPopulacaoEstadual(codigo, anoInicio, anoFinal);
+    } else if (tipo === "municipio") {
+        dadosHook = useCrescimentoPopulacaoMunicipal(codigo, anoInicio, anoFinal);
+        indicadoresHook = useIndicadoresPopulacaoMunicipal(codigo, anoInicio, anoFinal);
+    } else {
+        dadosHook = useCrescimentoPopulacaoUniao(anoInicio, anoFinal);
+        indicadoresHook = useIndicadoresPopulacaoUniao(anoInicio, anoFinal);
+    }
+    const { data: dados, isLoading: graficoLoading } = dadosHook;
+    const { data: indicadores, isLoading: indicadoresLoading } = indicadoresHook;
     const anosDisponiveis = Array.from({ length: anoMax - anoMin + 1 }, (_, i) => {
         const year = (anoMin + i).toString();
         return { label: year, value: year };
     });
-
     const formatNumber = (value: number) =>
         new Intl.NumberFormat("pt-BR").format(value ?? 0);
-
     const formatPercent = (value: number) =>
         `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
-
     return (
         <>
             <Button
@@ -61,31 +68,26 @@ export default function PopoverGraficoPopulacional({
                     !text-emerald-800 hover:!bg-emerald-100 hover:!text-emerald-800
                     focus:!ring-2 focus:!ring-emerald-300 rounded-full transition"
                 onClick={(e) => opRef.current?.toggle(e)}
-                tooltip={`Visualizar crescimento e indicadores do ${tipo}`}
+                tooltip={`Visualizar crescimento e indicadores da ${tipo === "uniao" ? "União (Brasil)" : tipo}`}
                 tooltipOptions={{ position: "bottom", showDelay: 250 }}
-                aria-label={`Abrir gráfico de população do ${tipo}`}
+                aria-label={`Abrir gráfico de população da ${tipo === "uniao" ? "União" : tipo}`}
             />
-
             <OverlayPanel ref={opRef} dismissable className="shadow-lg rounded-lg">
                 <div className="w-[460px] px-3 py-2">
                     {/* Filtros de Ano */}
-                    <div className="flex gap-2 mb-3">
+                    {/* Filtro de Ano (somente início) */}
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="text-sm text-gray-600 font-medium">Ano inicial:</span>
                         <Dropdown
                             value={anoInicio}
                             options={anosDisponiveis}
                             onChange={(e) => setAnoInicio(e.value)}
-                            placeholder="Ano Início"
-                            className="w-full"
+                            className="w-32"
                         />
-                        <Dropdown
-                            value={anoFinal}
-                            options={anosDisponiveis}
-                            onChange={(e) => setAnoFinal(e.value)}
-                            placeholder="Ano Fim"
-                            className="w-full"
-                        />
+                        <span className="text-sm text-gray-500">
+                            até <strong>{anoFinal}</strong>
+                        </span>
                     </div>
-
                     {/* Gráfico */}
                     {graficoLoading ? (
                         <p className="text-gray-500 text-sm">Carregando gráfico...</p>
@@ -95,7 +97,7 @@ export default function PopoverGraficoPopulacional({
                                 anoValido: item.anoValido ?? item.ano,
                                 populacao: item.populacao,
                             }))}
-                            titulo={`População (${sigla}) de ${anoInicio} a ${anoFinal}`}
+                            titulo={`População (${tipo === "uniao" ? "Brasil" : sigla}) de ${anoInicio} a ${anoFinal}`}
                             cor={cor}
                         />
                     ) : (
@@ -103,24 +105,21 @@ export default function PopoverGraficoPopulacional({
                             Nenhum dado encontrado.
                         </p>
                     )}
-
                     {/* Indicadores */}
                     <div className="mt-5 border-t pt-3">
                         <h4 className="text-sm font-semibold text-gray-700 mb-3">
                             Indicadores Populacionais
                         </h4>
-
                         {indicadoresLoading ? (
                             <p className="text-gray-500 text-sm">Calculando...</p>
                         ) : indicadores ? (
                             <div className="space-y-3 text-sm text-gray-700">
-                                {/* Painel visual de resumo */}
                                 <div
                                     className={`flex justify-between items-center p-3 rounded-md ${indicadores.tendencia === "Crescimento"
-                                            ? "bg-green-100 border border-green-300"
-                                            : indicadores.tendencia === "Queda"
-                                                ? "bg-red-100 border border-red-300"
-                                                : "bg-gray-50 border border-gray-300"
+                                        ? "bg-green-100 border border-green-300"
+                                        : indicadores.tendencia === "Queda"
+                                            ? "bg-red-100 border border-red-300"
+                                            : "bg-gray-50 border border-gray-300"
                                         }`}
                                 >
                                     <div>
@@ -135,18 +134,16 @@ export default function PopoverGraficoPopulacional({
                                         <p className="text-xs text-gray-600">Taxa (%)</p>
                                         <p
                                             className={`font-bold text-lg ${indicadores.tendencia === "Crescimento"
-                                                    ? "text-green-600"
-                                                    : indicadores.tendencia === "Queda"
-                                                        ? "text-red-600"
-                                                        : "text-gray-700"
+                                                ? "text-green-600"
+                                                : indicadores.tendencia === "Queda"
+                                                    ? "text-red-600"
+                                                    : "text-gray-700"
                                                 }`}
                                         >
                                             {formatPercent(indicadores.crescimento_percentual)}
                                         </p>
                                     </div>
                                 </div>
-
-                                {/* Detalhes numéricos */}
                                 <div className="grid grid-cols-2 gap-y-2">
                                     <p>
                                         <strong>Média Anual:</strong>{" "}
@@ -156,17 +153,13 @@ export default function PopoverGraficoPopulacional({
                                         <strong>Tendência:</strong>{" "}
                                         <span
                                             className={`font-semibold ${indicadores.tendencia === "Crescimento"
-                                                    ? "text-green-600"
-                                                    : indicadores.tendencia === "Queda"
-                                                        ? "text-red-600"
-                                                        : "text-gray-600"
+                                                ? "text-green-600"
+                                                : indicadores.tendencia === "Queda"
+                                                    ? "text-red-600"
+                                                    : "text-gray-600"
                                                 }`}
                                         >
-                                            {indicadores.tendencia === "Crescimento"
-                                                ? "Crescimento"
-                                                : indicadores.tendencia === "Queda"
-                                                    ? " Queda"
-                                                    : "Estável"}
+                                            {indicadores.tendencia ?? "Estável"}
                                         </span>
                                     </p>
                                     <p>

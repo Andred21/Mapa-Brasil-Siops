@@ -30,7 +30,7 @@ class SiopsFullImportCommand extends Command
             Artisan::call('cache:clear');
             Artisan::call('config:clear');
 
-            $this->line("\n📍 Executando seeder de ENTES...");
+            $this->line("\n📍 Executando seeder d   e ENTES...");
             Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\SiopsEnteSeeder']);
             $this->info("✅ Seeder de ENTES concluído.\n");
 

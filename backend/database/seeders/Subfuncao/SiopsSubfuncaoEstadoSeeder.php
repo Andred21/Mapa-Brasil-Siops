@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class SiopsSubfuncaoEstadoSeeder extends Seeder
 {
+
+    /* Seeder para armazenar a função e subfunção da saúde de todos os estados  */
+    
     public function run(): void
     {
         $siops = app(SiopsService::class);

@@ -53,6 +53,38 @@ class IndicadorHelper
         $raw = str_replace(',', '.', $raw);
         return is_numeric($raw) ? (float) $raw : 0.0;
     }
+
+    public static function findValoresCompletos(array|Collection $indicadores, string $numero): array
+    {
+        $row = collect($indicadores)->firstWhere('numero_indicador', $numero);
+
+        if (!$row) {
+            return [
+                'indicador' => 0.0,
+                'numerador' => 0.0,
+                'denominador' => 0.0,
+            ];
+        }
+
+        // Detecta unidade pelo conteúdo (ou pode vir de fora, se preferir)
+        $valorBruto = (string) ($row['indicador_calculado'] ?? '');
+        $temPorcentagem = str_contains($valorBruto, '%');
+        $temMoeda = str_contains($valorBruto, 'R$');
+
+        $indicador = match (true) {
+            $temMoeda => self::parseMoedaBR($valorBruto),
+            $temPorcentagem => self::parsePercentBR($valorBruto),
+            default => self::parseNumeroBR($valorBruto),
+        };
+
+        return [
+            'indicador' => $indicador,
+            'numerador' => (float) ($row['numerador'] ?? 0),
+            'denominador' => (float) ($row['denominador'] ?? 0),
+        ];
+    }
+
+
 }
 
 

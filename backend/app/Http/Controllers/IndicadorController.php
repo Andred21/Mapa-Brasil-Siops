@@ -14,6 +14,12 @@ class IndicadorController extends Controller
 
     // Indicador Estadual
 
+    /**
+     * 
+     * Retorna os indicadores do estado selecionado
+     * @param string $coUf código do estado
+     * 
+     */
     public function estadual(string $coUf)
     {
         return response()
@@ -22,6 +28,13 @@ class IndicadorController extends Controller
             );
     }
 
+    /**
+     * 
+     * Retorna os indicadores do estado selecionado anualemnte
+     * @param string $coUf código do estado
+     * @param string $ano ano selecionado
+     * 
+     */
     public function estadualPorAno(string $coUf, string $ano)
     {
         return response()->json(
@@ -30,8 +43,22 @@ class IndicadorController extends Controller
 
     }
 
+    public function estadualEspecificoPorAno(string $coUf, string $numeroIndicador, string $ano)
+    {
+        return response()->json(
+            $this->indicadorService->getIndicadoreEspecificoEstadualAno($coUf, $numeroIndicador, $ano)
+        );
+
+    }
+
     // Indicador Municipal
 
+    /**
+     * 
+     * Retorna os indicadores do municipio selecionado
+     * @param string $coMunicipio código do municipio
+     * 
+     */
     public function municipal(string $coMunicipio)
     {
         return response()->json(
@@ -39,6 +66,13 @@ class IndicadorController extends Controller
         );
     }
 
+    /**
+     * 
+     * Retorna os indicadores do municipio selecionado anualemnte
+     * @param string $coMunicipio código do municipio
+     * @param string $ano ano selecionado
+     * 
+     */
     public function municipalPorAno(string $coMunicipio, string $ano)
     {
 
@@ -48,9 +82,22 @@ class IndicadorController extends Controller
 
     }
 
+    public function municipalEspecificoPorAno(string $coMunicipio, string $numeroIndicador, string $ano)
+    {
+        return response()->json(
+            $this->indicadorService->getIndicadoreEspecificoMunicipalAno($coMunicipio, $numeroIndicador, $ano)
+        );
+
+    }
+
 
     // Indicador DF (Distrito Federal)
 
+    /**
+     * 
+     * 
+     * 
+     */
     public function df()
     {
         return response()->json(
@@ -58,6 +105,12 @@ class IndicadorController extends Controller
         );
     }
 
+    /**
+     * 
+     * Retorna os indicadores do Distrito Federal anualmente
+     * @param string $ano ano selecionado
+     * 
+     */
     public function dfPorAno(string $ano)
     {
 
@@ -67,9 +120,21 @@ class IndicadorController extends Controller
 
     }
 
+    public function dfEspecificoPorAno(string $numeroIndicador, string $ano)
+    {
+        return response()->json(
+            $this->indicadorService->getIndicadoreEspecificoDFAno($numeroIndicador, $ano)
+        );
+
+    }
+
     // Indicador União 
 
-
+    /**
+     * 
+     * Retorna os indicadores da União
+     * 
+     */
     public function uniao()
     {
 
@@ -79,11 +144,25 @@ class IndicadorController extends Controller
 
     }
 
+    /**
+     * 
+     * Retorna os indicadores da União anualmente
+     * @param string $ano ano selecionado
+     * 
+     */
     public function uniaoPorAno(string $ano)
     {
 
         return response()->json(
             $this->indicadorService->getIndicadoresUniaoAno($ano)
+        );
+
+    }
+
+    public function uniaoEspecificoPorAno(string $numeroIndicador, string $ano)
+    {
+        return response()->json(
+            $this->indicadorService->getIndicadoreEspecificoUniaoAno($numeroIndicador, $ano)
         );
 
     }

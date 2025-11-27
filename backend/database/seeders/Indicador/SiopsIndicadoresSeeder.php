@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Indicador\Seeders;
+namespace Database\Seeders\Indicador;
 
 
 use Illuminate\Database\Seeder;
@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class SiopsIndicadoresSeeder extends Seeder
 {
+
+    /* Seeder para armazenar os indicadores do Df, União e todos os estados */
     public function run(): void
     {
         $siops = app(SiopsService::class);
 
         DB::beginTransaction();
 
-        
+
         try {
             $anosPeriodos = DB::table('ano_periodo')->get();
             $estados = DB::table('lista_estado')->get();
@@ -25,7 +27,7 @@ class SiopsIndicadoresSeeder extends Seeder
             }
 
             // ✅ Filtra apenas anos >= 2013 e período == 2
-            $anosPeriodos = $anosPeriodos->filter(fn($a) => (int) $a->ds_ano >= 2013 && (int) $a->nu_periodo === 2);
+            $anosPeriodos = $anosPeriodos->filter(fn($a) => (int) $a->ds_ano >= 2025 && (int) $a->nu_periodo === 1);
 
             foreach ($anosPeriodos as $anoPeriodo) {
                 $ano = (int) $anoPeriodo->ds_ano;
@@ -40,7 +42,7 @@ class SiopsIndicadoresSeeder extends Seeder
                 foreach ($estados as $estado) {
 
                     if ((int) $estado->co_uf === 53) {
-                        continue; 
+                        continue;
                     }
 
                     try {

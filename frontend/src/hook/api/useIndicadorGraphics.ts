@@ -14,6 +14,20 @@ export const useGraficoComposicaoReceita = (
     });
 };
 
+// Composição da Receita por vários anos (barras empilhadas)
+export const useGraficoComposicaoReceitaPeriodo = (
+    tipo: "estado" | "municipio" | "uniao" | "df",
+    codigo: string,
+    anos: number[]
+) => {
+    return useQuery({
+        queryKey: ["graficoComposicaoReceitaPeriodo", tipo, codigo, anos],
+        queryFn: () => indicadorGraphicService.getComposicaoReceitaPeriodo(tipo, codigo, anos),
+        enabled: !!tipo && !!codigo && anos.length > 0,
+    });
+};
+
+
 // Fontes da Saúde
 export const useGraficoFontesSaude = (
     tipo: "estado" | "municipio" | "uniao" | "df",
@@ -67,4 +81,25 @@ export const useGraficoSerieTemporal = (
             indicadorGraphicService.getSerieTemporal(tipo, codigo, indicadores, inicio, fim),
         enabled: !!tipo && !!codigo && !!indicadores && !!inicio && !!fim,
     });
+};
+
+export const useGraficoSerieEstatisticas = (
+  tipo: "estado" | "municipio" | "uniao" | "df",
+  codigo: string,
+  indicadores: string,
+  inicio: number,
+  fim: number
+) => {
+  return useQuery({
+    queryKey: ["graficoSerieEstatisticas", tipo, codigo, indicadores, inicio, fim],
+    queryFn: () =>
+      indicadorGraphicService.getEstatisticasSerieTemporal(
+        tipo,
+        codigo,
+        indicadores,
+        inicio,
+        fim
+      ),
+    enabled: !!tipo && !!codigo && !!indicadores && !!inicio && !!fim,
+  });
 };

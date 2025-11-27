@@ -12,12 +12,26 @@ class EntesController extends Controller
     }
 
     /* Anos e Periodos */
+
+
+    /**
+     * 
+     * Retorna a lista dos anos e peridos disponiveis
+     * 
+     */
     public function anosPeriodos()
     {
         return response()
             ->json($this->entesService->listaAnosPeriodos());
     }
 
+    /**
+     *
+     * Retorna o ano e periodo selecionado
+     * @param mixed $ano ano selecionado
+     * @param mixed $periodo periodo selecionado
+     *
+     */
     public function buscarAnoPeriodo($ano, $periodo)
     {
         return response()
@@ -25,12 +39,24 @@ class EntesController extends Controller
     }
 
     /* Estados */
+
+    /**
+     * 
+     * Retorna a lista dos estados disponiveis
+     * 
+     */
     public function estados()
     {
         return response()
             ->json($this->entesService->listarEstado());
     }
 
+    /**
+     * 
+     * Busca o estado selecionado
+     * @param mixed $codEstado código do estado selecionado
+     * 
+     */
     public function buscarEstado($codEstado)
     {
         return response()
@@ -39,12 +65,23 @@ class EntesController extends Controller
 
     /* Municipios */
 
+    /**
+     * 
+     * Retorna a lista dos municipios disponiveis
+     * 
+     */
     public function municipios()
     {
         return response()
             ->json($this->entesService->listarMunicipios());
     }
 
+    /**
+     * 
+     * Retorna os municipios do estado selecionado
+     * @param mixed $coUf código do estado
+     * 
+     */
     public function municipiosPorEstado($coUf)
     {
         try {
@@ -60,6 +97,12 @@ class EntesController extends Controller
 
     }
 
+    /**
+     * 
+     * Busca o municipio selecionado
+     * @param mixed $coMunicipio código do municipio selecionado
+     * 
+     */
     public function buscarMunicipio($coMunicipio)
     {
         $municipio = $this->entesService->buscarMunicipioPorCod($coMunicipio);
@@ -72,6 +115,12 @@ class EntesController extends Controller
     }
 
 
+    /**
+     * 
+     * Retorna o estado do municipio selecionado
+     * @param mixed $coMunicipio código do municipio selecionado
+     * 
+     */
     public function getEstadoByMunicipioCod($coMunicipio)
     {
         try {

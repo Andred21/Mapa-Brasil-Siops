@@ -28,4 +28,11 @@ class IndicadorDfRepository
             ->where('numero_indicador', $numero)
             ->first();
     }
+
+    public function  findByDfIndicadorAno(string $numeroIndicador, string $ano)
+    {
+        return IndicadorDf::where('numero_indicador', $numeroIndicador)
+            ->where('ano', $ano)
+            ->first();
+    }
 }

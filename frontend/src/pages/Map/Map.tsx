@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef, } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import type { GeoJSON as GeoJSONType } from "geojson";
 import {
   BR_BOUNDS,
@@ -6,19 +6,27 @@ import {
   styleEstado,
   onEachMun,
   type UF,
-  styleMun
+  styleMun,
+  stEstadoSel,
+  stMunSel,
 } from ".";
 
-import FitToLayer from "@/hook/map/FitToLayer";
-import ResetZoom from "@/hook/map/ResetZoom";
-
 import { Button } from "primereact/button";
-import DataMenu from "@/pages/DataMenu/DataMenu";
+import DataMenu from "@/components/Menus/DataMenu/DataMenu";
+
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from "react-leaflet";
+import type { SearchSelection } from "../Search/Search";
+import type { listaEstados } from "@/types";
 
+interface MapProps {
+  externalSelection?: SearchSelection | null;
+  onExternalSelectionHandled?: () => void;
+}
 
-export default function Map() {
-
+export default function Map({
+  externalSelection = null,
+  onExternalSelectionHandled,
+}: MapProps) {
   const [estadoGeo, setEstadoGeo] = useState<GeoJSONType | null>(null);
   const [selectedUF, setSelectedUF] = useState<UF | null>(null);
   const [municipiosGeo, setMunicipiosGeo] = useState<GeoJSONType | null>(null);
@@ -28,23 +36,44 @@ export default function Map() {
   const [munSelId, setMunSelId] = useState<string | number | null>(null);
   const [sideInfo, setSideInfo] = useState<any>(null);
 
-
-
   const refEstados = useRef<L.GeoJSON<any> | null>(null);
   const refMun = useRef<L.GeoJSON<any> | null>(null);
   const mapRef = useRef<L.Map | null>(null);
 
+  // --------------------------
+  // HELPERS DE CENTRALIZAÇÃO
+  // --------------------------
+  const centerAndZoom = (bounds: L.LatLngBounds, maxZoom = 7, padding = 35) => {
+    const map = mapRef.current;
+    if (!map) return;
 
-  // Carrega os Estados
+    map.fitBounds(bounds, {
+      animate: true,
+      padding: [padding, padding],
+      maxZoom,
+    });
+
+    setTimeout(() => {
+      const center = bounds.getCenter();
+      map.panTo(center, {
+        animate: true,
+        duration: 0.45,
+      });
+    }, 350);
+  };
+
+  // Carrega Estados
   useEffect(() => {
     fetch("/data/estados.geojson").then(r => r.json()).then(setEstadoGeo);
   }, []);
 
-  // Ao escolher a UF, carrega os Municípios dessa UF
+  // Carrega Municipios da UF
   useEffect(() => {
     setMunicipiosGeo(null);
     setMunSelId(null);
+
     if (!selectedUF) return;
+
     fetch(`/data/municipios/geojs-${selectedUF.codigo_uf}-mun.json`)
       .then(r => r.json())
       .then(setMunicipiosGeo);
@@ -54,14 +83,11 @@ export default function Map() {
     style: { height: "100vh", width: "100%" },
     bounds: BR_BOUNDS as any,
     maxBounds: BR_BOUNDS as any,
-
-    // zoom inicial (ajuste conforme o gosto)
     maxBoundsViscosity: 1.0,
     minZoom: 4.4,
     maxZoom: 8,
     preferCanvas: true,
     scrollWheelZoom: false,
-
   }), []);
 
   const clearStats = () => {
@@ -70,62 +96,191 @@ export default function Map() {
     setMunSelId(null);
     setMunSelName(null);
     setSideInfo(null);
+  };
 
-
-  }
-
+  // -------------------------------------------
+  // Seleção externa (busca)
+  // -------------------------------------------
   useEffect(() => {
+    if (!externalSelection) return;
 
-    if (!munSelId || !refMun.current) return;
+    if (externalSelection.type === "estado") {
+      const codigoUfNumber = Number(externalSelection.codigo_uf);
+      const nextUF: UF = {
+        codigo_uf: codigoUfNumber,
+        sigla: externalSelection.sigla,
+        nome: externalSelection.nome,
+      };
 
-    const mapInstance = mapRef.current;
-    if (!mapInstance) return;
+      setSelectedUF(nextUF);
+      setMunSelId(null);
+      setMunSelName(null);
+      setSideInfo({
+        type: "estado",
+        data: { codigo_uf: externalSelection.codigo_uf },
+      });
+    } else {
+      const codigoUfNumber = Number(externalSelection.codigo_uf);
+      if (!isNaN(codigoUfNumber)) {
+        const nextUF: UF = {
+          codigo_uf: codigoUfNumber,
+          sigla: externalSelection.sigla,
+          nome: externalSelection.ufNome ?? externalSelection.sigla,
+        };
+        setSelectedUF(nextUF);
+      }
+
+      setMunSelId(externalSelection.cod_ibge);
+      setMunSelName(externalSelection.nome);
+
+      setSideInfo({
+        type: "municipio",
+        data: { cod_ibge: externalSelection.cod_ibge },
+      });
+    }
+
+    onExternalSelectionHandled?.();
+  }, [externalSelection, onExternalSelectionHandled]);
+
+  // -------------------------------------------
+  // Zoom para UF selecionada
+  // -------------------------------------------
+  useEffect(() => {
+    if (!selectedUF || !refEstados.current || !mapRef.current) return;
+
+    const targetSigla = selectedUF.sigla.toUpperCase();
+    const targetCodigo = String(selectedUF.codigo_uf);
+
+    refEstados.current.eachLayer((layer: any) => {
+      const p = layer.feature?.properties || {};
+
+      const layerSigla = String(p.sigla || p.SIGLA || "").toUpperCase();
+      const layerCodigo = String(
+        p.codigo_uf || p.code || p.cod || p.id || ""
+      );
+
+      if (layerSigla === targetSigla || layerCodigo === targetCodigo) {
+        const bounds = layer.getBounds();
+        layer.setStyle(stEstadoSel);
+
+        centerAndZoom(bounds, 6);
+
+        setTimeout(() => {
+          refEstados.current?.resetStyle(layer);
+        }, 1200);
+      }
+    });
+  }, [selectedUF, estadoGeo]);
+
+  // -------------------------------------------
+  // Zoom para Município selecionado
+  // -------------------------------------------
+  useEffect(() => {
+    if (!munSelId || !refMun.current || !mapRef.current) return;
 
     refMun.current.eachLayer((layer: any) => {
-      const feature = layer.feature;
       const codigo = String(
-        feature?.properties?.id ||
-        feature?.properties?.code ||
-        feature?.properties?.co_municipio ||
+        layer.feature?.properties?.id ||
+        layer.feature?.properties?.code ||
+        layer.feature?.properties?.co_municipio ||
         ""
       );
 
       if (codigo === String(munSelId)) {
         const bounds = layer.getBounds();
+        layer.setStyle(stMunSel);
 
-        // Faz o zoom (zoom suave)
-        mapInstance.fitBounds(bounds, { maxZoom: 8 });
-
-        // Adiciona efeito visual rápido (highlight temporário opcional)
+        centerAndZoom(bounds, 8);
 
         setTimeout(() => {
           refMun.current?.resetStyle(layer);
         }, 1200);
       }
     });
-  }, [munSelId]);
+  }, [munSelId, municipiosGeo]);
+
+  // -------------------------------------------
+  // Quando abre/fecha o painel lateral → reajusta mapa
+  // -------------------------------------------
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    setTimeout(() => {
+      mapRef.current?.invalidateSize();
+
+      // tenta recentralizar o elemento selecionado
+      if (munSelId && refMun.current) {
+        refMun.current.eachLayer((layer: any) => {
+          const codigo = String(
+            layer.feature?.properties?.id ||
+            layer.feature?.properties?.code ||
+            layer.feature?.properties?.co_municipio ||
+            ""
+          );
+          if (codigo === String(munSelId)) {
+            centerAndZoom(layer.getBounds(), 8);
+          }
+        });
+      } else if (selectedUF && refEstados.current) {
+        refEstados.current.eachLayer((layer: any) => {
+          const p = layer.feature?.properties || {};
+          const codigo = String(
+            p.codigo_uf || p.code || p.cod || p.id || ""
+          );
+          const sigla = String(p.sigla || p.SIGLA || "").toUpperCase();
+          if (
+            codigo === String(selectedUF.codigo_uf) ||
+            sigla === selectedUF.sigla.toUpperCase()
+          ) {
+            centerAndZoom(layer.getBounds(), 6);
+          }
+        });
+      }
+    }, 350);
+  }, [sideInfo]);
+
+  // -------------------------------------------
+  // RESET DO MAPA AO LIMPAR SELEÇÃO
+  // -------------------------------------------
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    // Nada selecionado → visão nacional
+    if (!selectedUF && !munSelId) {
+      map.fitBounds(BR_BOUNDS as any, {
+        animate: true,
+        padding: [20, 20],
+        maxZoom: 5,
+      });
+
+      setTimeout(() => {
+        map.panTo(map.getCenter(), {
+          animate: true,
+          duration: 0.4,
+        });
+      }, 350);
+    }
+  }, [selectedUF, munSelId]);
 
   return (
     <div className="flex w-full h-full pt-0">
 
-      {/* Painel principal (empurra o mapa) */}
+      {/* Painel principal */}
       <div
-        className={`transition-all duration-300 ease-in-out top-20 z-0 ${sideInfo ? "w-[calc(100%-576px)] right-[36rem]" : " w-full"
-          }`}
+        className={`transition-all duration-300 ease-in-out top-20 z-0 ${
+          sideInfo ? "w-[calc(100%-576px)] mr-[36rem]" : " w-full"
+        }`}
       >
-        {/* Painel de Info flutuante no canto superior esquerdo */}
+        {/* Info overlay */}
         <div className="absolute z-[1000] m-2 rounded bg-white/80 p-2 text-sm shadow">
-          <div>
-            <b>UF:</b> {selectedUF ? `${selectedUF.nome} (${selectedUF.sigla})` : "-"}
-          </div>
-          <div>
-            <b>Hover:</b> {hover}
-          </div>
-          {munSelName && <div><b>Município Selecionado:</b> {munSelName}</div>}
-          {munSelId && <div><b>Município ID:</b> {munSelId}</div>}
+          <div><b>UF:</b> {selectedUF ? `${selectedUF.nome} (${selectedUF.sigla})` : "-"}</div>
+          <div><b>Hover:</b> {hover}</div>
+          {munSelName && <div><b>Municipio Selecionado:</b> {munSelName}</div>}
+          {munSelId && <div><b>Municipio ID:</b> {munSelId}</div>}
 
           <Button
-            label="Limpar Seleção"
+            label="Limpar Selecao"
             icon="pi pi-refresh"
             type="submit"
             className="!h-8 !border-gray-500 !text-gray-600"
@@ -134,51 +289,39 @@ export default function Map() {
         </div>
 
         {/* Mapa */}
-        <MapContainer {...mapProps}
-          zoomControl={true}
-        >
-
+        <MapContainer {...mapProps} zoomControl ref={mapRef}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <ZoomControl position="topleft" />
 
-          {/* ESTADOS */}
           {estadoGeo && (
-            <>
-              <GeoJSON
-                ref={refEstados}
-                data={estadoGeo}
-                style={(feature) => styleEstado(feature, selectedUF)}
-                onEachFeature={(feature, layer) =>
-                  onEachEstado(feature, layer, selectedUF, setSelectedUF, setHover, setSideInfo)
-                }
-              />
-              <FitToLayer refLayer={refEstados} />
-            </>
+            <GeoJSON
+              ref={refEstados}
+              data={estadoGeo}
+              style={(feature) => styleEstado(feature, selectedUF)}
+              onEachFeature={(feature, layer) =>
+                onEachEstado(feature, layer, selectedUF, setSelectedUF, setHover, setSideInfo)
+              }
+            />
           )}
 
-          {/* MUNICÍPIOS */}
           {municipiosGeo && (
-            <>
-              <GeoJSON
-                ref={refMun}
-                data={municipiosGeo}
-                style={(feature) => styleMun(feature, munSelId)}
-                onEachFeature={(f, l) =>
-                  onEachMun(f, l, munSelId, setMunSelId, setHover, setMunSelName, setSideInfo)
-                }
-              />
-              <FitToLayer refLayer={refMun} />
-            </>
+            <GeoJSON
+              ref={refMun}
+              data={municipiosGeo}
+              style={(feature) => styleMun(feature, munSelId)}
+              onEachFeature={(f, l) =>
+                onEachMun(f, l, munSelId, setMunSelId, setHover, setMunSelName, setSideInfo)
+              }
+            />
           )}
-
-          <ResetZoom selectedUF={selectedUF} munSelId={munSelId} />
         </MapContainer>
       </div>
 
-      {/* Painel lateral de dados fixo */}
+      {/* Painel lateral */}
       <div
-        className={`absolute right-0 top-20 h-[calc(100vh-80px)] bg-white shadow-lg border-l border-gray-200 transition-all duration-300 ease-in-out z-10 ${sideInfo ? "w-[36rem] opacity-100" : "w-0 opacity-0"
-          } overflow-y-auto`}
+        className={`absolute right-0 top-20 h-[calc(100vh-80px)] bg-white shadow-lg border-l border-gray-200 transition-all duration-300 ease-in-out z-10 ${
+          sideInfo ? "w-[36rem] opacity-100" : "w-0 opacity-0"
+        } overflow-y-auto`}
       >
         <DataMenu
           visible={!!sideInfo}
@@ -189,9 +332,28 @@ export default function Map() {
             setMunSelId(cod_ibge);
             setSideInfo({ type: "municipio", data: { cod_ibge } });
           }}
+          onSelectEstadoFromList={(estadoSelecionado: listaEstados) => {
+            const codigoUfString =
+              estadoSelecionado.co_uf || (estadoSelecionado as any)?.codigo_uf || "";
+            const codigoUfNumber = Number(codigoUfString);
+
+            setSelectedUF({
+              codigo_uf: codigoUfNumber,
+              sigla: estadoSelecionado.sg_uf || "",
+              nome: estadoSelecionado.no_uf || estadoSelecionado.sg_uf,
+            });
+
+            setMunicipiosGeo(null);
+            setMunSelId(null);
+            setMunSelName(null);
+
+            setSideInfo({
+              type: "estado",
+              data: { codigo_uf: codigoUfString },
+            });
+          }}
         />
       </div>
     </div>
   );
-
 }

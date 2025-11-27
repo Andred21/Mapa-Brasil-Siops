@@ -23,6 +23,7 @@ export default function AccordionTabela({
   color = "emerald",
   className = "",
 }: SmartAccordionProps) {
+
   const colorMap: Record<string, string> = {
     emerald: "text-emerald-700 hover:!bg-emerald-50",
     blue: "text-blue-700 hover:!bg-blue-50",
@@ -33,12 +34,15 @@ export default function AccordionTabela({
   const textColor = colorMap[color];
 
   return (
+
     <Accordion
       multiple
       activeIndex={activeIndex}
       className={`border-t border-gray-200 rounded-lg shadow-sm bg-white ${className}`}
     >
+
       {tabs.map((tab, i) => (
+
         <AccordionTab
           key={i}
           header={
@@ -55,8 +59,13 @@ export default function AccordionTabela({
           className={textColor}
         >
           <div className="p-4 text-gray-700 leading-relaxed">{tab.content}</div>
+
         </AccordionTab>
+
       ))}
+
     </Accordion>
+
   );
+  
 }

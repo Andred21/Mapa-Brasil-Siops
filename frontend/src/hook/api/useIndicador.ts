@@ -22,6 +22,17 @@ export const useIndicadoEstadoAno = (coUf: string, ano: string) => {
 
 };
 
+
+export const useIndicadoEstadoEspecificoAno = (coUf: string, numeroIndicador: string, ano: string) => {
+
+    return useQuery({
+        queryKey: ['estadoIndicadorEspecificoAno', coUf, numeroIndicador, ano],
+        queryFn: () => indicadorService.buscarIndicadorEstadualEspecificoAno(coUf, numeroIndicador, ano),
+        enabled: !!coUf && !!numeroIndicador && !!ano,
+    });
+
+};
+
 {/* Municipal */ }
 
 export const useIndicadoMunicipio = (coMunicipio: string) => {
@@ -44,6 +55,17 @@ export const useIndicadoMunicipioAno = (coMunicipio: string, ano: string) => {
 
 };
 
+export const useIndicadoMunicipioEspecificoAno = (coMunicipio: string, numeroIndicador: string, ano: string) => {
+
+    return useQuery({
+        queryKey: ['municipioIndicadorEspecificoAno', coMunicipio, numeroIndicador, ano],
+        queryFn: () => indicadorService.buscarIndicadorMunicipalEspecificoAno(coMunicipio, numeroIndicador, ano),
+        enabled: !!coMunicipio && !!numeroIndicador && !!ano,
+    });
+
+};
+
+
 {/* DF (Distrito Federal) */ }
 
 export const useIndicadorDf = () => {
@@ -64,6 +86,17 @@ export const useIndicadorDfAno = (ano: string) => {
 
 };
 
+export const useIndicadorDfEspecificoAno = (numeroIndicador: string, ano: string) => {
+
+    return useQuery({   
+        queryKey: ['dfIndicadorEspecificoAno', numeroIndicador, ano],
+        queryFn: () => indicadorService.buscarIndicadorDfEspecificoAno(numeroIndicador, ano),
+        enabled: !!numeroIndicador && !!ano,
+    }); 
+};  
+
+
+
 {/* União */ }
 
 export const useIndicadorUniao = () => {
@@ -83,3 +116,12 @@ export const useIndicadorUniaoAno = (ano: string) => {
 
 };
 
+export const useIndicadorUniaoEspecificoAno = (numeroIndicador: string, ano: string) => {
+
+    return useQuery({
+        queryKey: ['uniaoIndicadorEspecificoAno', numeroIndicador, ano],
+        queryFn: () => indicadorService.buscarIndicadorUniaoEspecificoAno(numeroIndicador, ano),
+        enabled: !!numeroIndicador && !!ano,
+    });
+
+};
