@@ -75,18 +75,18 @@ Objetivos principais:
 ## 🖥️ Screenshots (adicione as imagens depois)
 
 ### 📌 Tela inicial com mapa interativo  
-_(adicione aqui)_  
-`/public/screenshots/mapa.png`
+<img width="1918" height="920" alt="Página Inicial Sistema" src="https://github.com/user-attachments/assets/d0da72b0-3ced-4b75-9f1a-3455accdc82f" />
 
 ### 📌 Painel lateral de indicadores  
-_(adicione aqui)_  
-`/public/screenshots/painel-indicadores.png`
+
+<img width="574" height="840" alt="Menu Lateral com os dados do munici ou uf selecionado" src="https://github.com/user-attachments/assets/1587f55e-420e-4035-87bf-886a12e07910" />
 
 ### 📌 Dashboard de receitas e despesas  
-_(adicione aqui)_  
-`/public/screenshots/dashboard.png`
 
----
+<img width="1632" height="767" alt="Painel Receitas Inicio" src="https://github.com/user-attachments/assets/1a6bdc5e-bac0-40b5-bbd9-0aa90c4e1fab" />
+
+<img width="1634" height="781" alt="Painel Saúde Inicial" src="https://github.com/user-attachments/assets/e0ee8ff1-5600-4101-a218-1de0eaa4efe0" />
+
 
 ## 📂 Estrutura do Projeto
 
@@ -117,3 +117,50 @@ _(adicione aqui)_
 ├── package.json
 ├── composer.json
 └── README.md
+
+### ⚙️ Instalação Completa
+
+## **1️⃣ Clonar o repositório**
+```bash
+git clone https://github.com/Andred21/Mapa-Brasil-Siops.git
+cd Mapa-Brasil-Siops
+
+## **2️⃣ Configurar o Backend (Laravel)**
+composer install
+
+**Criar arquivo .env**: cp .env.example .env
+
+**Gerar key da aplicação**: php artisan key:generate
+
+**Configurar banco de dados no .env** 
+
+**rodar migrations**:php artisan migrate 
+**Iniciar servidor Laravel**: php artisan serve
+
+**O backend ficará acessível em**:http://localhost:8000
+
+##**3️⃣ Configurar o Frontend (React + Inertia)**
+
+**Instalar dependências**:npm install
+**Rodar em modo de desenvolvimento**:npm run dev
+
+##**▶️ Como Usar a Aplicação**
+
+**Acesse o navegador em**: http://localhost:8000
+
+##**🔧 Scripts Úteis (Frontend + Backend)**  
+
+**Limpar caches**: php artisan optimize:clear
+
+
+**Atualizar autoload**: composer dump-autoload
+
+
+**Rodar servidor**: php artisan serve
+
+##**👥 Autores**
+
+Enrico Beltrame Lara
+João Victor de Batalha Andreoli
+Marcos Vinicius Jeronimo dos Santos
+
