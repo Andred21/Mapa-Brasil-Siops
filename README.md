@@ -87,6 +87,7 @@ Objetivos principais:
 
 <img width="1634" height="781" alt="Painel Saúde Inicial" src="https://github.com/user-attachments/assets/e0ee8ff1-5600-4101-a218-1de0eaa4efe0" />
 
+---
 
 ## 📂 Estrutura do Projeto
 
@@ -118,6 +119,8 @@ Objetivos principais:
 ├── composer.json
 └── README.md
 
+---
+
 ## ⚙️ Instalação Completa
 
 ### 1️⃣ Clonar o repositório
@@ -148,6 +151,8 @@ composer install
 
 **Acesse o navegador em**: http://localhost:8000
 
+---
+
 ## 🔧 Scripts Úteis (Frontend + Backend)
 
 **Limpar caches**: php artisan optimize:clear
@@ -158,9 +163,14 @@ composer install
 
 **Rodar servidor**: php artisan serve
 
+---
+
 ## 👥 Autores
 
 Enrico Beltrame Lara
 João Victor de Batalha Andreoli
 Marcos Vinicius Jeronimo dos Santos
+
+---
+
 
