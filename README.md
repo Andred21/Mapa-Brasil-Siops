@@ -53,7 +53,6 @@ Objetivos principais:
 
 ### **Frontend (React + Inertia.js)**
 - React 18  
-- Inertia.js  
 - Hooks personalizados  
 - PrimeReact (UI components)  
 - TailwindCSS (estilização)  
@@ -61,7 +60,7 @@ Objetivos principais:
 - Mapa interativo com Leaflet  
 
 ### **Banco de Dados**
-- MySQL / MariaDB  
+- MySQL 
 
 ### **Outros**
 - Axios  
@@ -120,7 +119,7 @@ Objetivos principais:
 
 ---
 
-## ⚙️ Instalação Completa
+## ⚙️ **Instalação Completa**
 
 ### 1️⃣ Clonar o repositório
 ```bash
