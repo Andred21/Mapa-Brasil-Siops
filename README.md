@@ -118,7 +118,6 @@ Objetivos principais:
 └── README.md
 
 ---
----
 ## ⚙️ **Instalação Completa**
 
 ### 1️⃣ Clonar o repositório
@@ -168,6 +167,8 @@ composer install
 Enrico Beltrame Lara
 João Victor de Batalha Andreoli
 Marcos Vinicius Jeronimo dos Santos
+
+---
 
 ---
 
