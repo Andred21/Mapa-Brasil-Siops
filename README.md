@@ -118,14 +118,14 @@ Objetivos principais:
 ├── composer.json
 └── README.md
 
-##  ⚙️ Instalação Completa
+## ⚙️ Instalação Completa
 
-## 1️⃣ Clonar o repositório**
+### 1️⃣ Clonar o repositório
 ```bash
 git clone https://github.com/Andred21/Mapa-Brasil-Siops.git
 cd Mapa-Brasil-Siops
 
-## 2️⃣ Configurar o Backend (Laravel)**
+### 2️⃣ Configurar o Backend (Laravel)
 composer install
 
 **Criar arquivo .env**: cp .env.example .env
@@ -139,16 +139,16 @@ composer install
 
 **O backend ficará acessível em**:http://localhost:8000
 
-## 3️⃣ Configurar o Frontend (React + Inertia)**
+### 3️⃣ Configurar o Frontend (React + Inertia)
 
 **Instalar dependências**:npm install
 **Rodar em modo de desenvolvimento**:npm run dev
 
-## ▶️ Como Usar a Aplicação**
+### ▶️ Como Usar a Aplicação
 
 **Acesse o navegador em**: http://localhost:8000
 
-##**🔧 Scripts Úteis (Frontend + Backend)**  
+## 🔧 Scripts Úteis (Frontend + Backend)
 
 **Limpar caches**: php artisan optimize:clear
 
