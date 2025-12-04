@@ -1,5 +1,5 @@
 # 📊 Mapa Brasil SIOPS  
-Sistema interativo para visualização e análise dos dados públicos de saúde no Brasil
+Sistema Web interativo para Democratização e Análise de Dados Públicos Governamentais (Brasil)
 
 ![Laravel](https://img.shields.io/badge/Laravel-10.x-red?style=flat&logo=laravel)
 ![React](https://img.shields.io/badge/React-18.x-61dafb?style=flat&logo=react)
