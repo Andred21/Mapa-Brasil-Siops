@@ -3,7 +3,6 @@ Sistema interativo para visualização e análise dos dados públicos de saúde 
 
 ![Laravel](https://img.shields.io/badge/Laravel-10.x-red?style=flat&logo=laravel)
 ![React](https://img.shields.io/badge/React-18.x-61dafb?style=flat&logo=react)
-![InertiaJS](https://img.shields.io/badge/Inertia.js-Framework-blueviolet)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-38bdf8?style=flat&logo=tailwindcss)
 ![MySQL](https://img.shields.io/badge/MySQL-8.x-005C84?style=flat&logo=mysql)
 ![Leaflet](https://img.shields.io/badge/Leaflet-Map-199900?style=flat&logo=leaflet)
