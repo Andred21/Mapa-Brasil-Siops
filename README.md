@@ -117,6 +117,7 @@ Objetivos principais:
 ├── composer.json
 └── README.md
 
+```md
 ---
 
 ## ⚙️ **Instalação Completa**
